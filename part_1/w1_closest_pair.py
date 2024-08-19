@@ -1,7 +1,6 @@
-import math
 import operator
-import random
-import time
+
+import math
 
 
 def euclidean_distance(point_1, point_2):
@@ -73,6 +72,10 @@ def closest_pair(points):
     p_y = sorted(points, key=operator.itemgetter(1))
 
     return _closest_pair(p_x, p_y)
+
+
+# import random
+# import time
 
 
 # points = [
