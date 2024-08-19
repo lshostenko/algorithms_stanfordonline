@@ -1,3 +1,5 @@
+import gzip
+
 
 def _merge(sorted_array_1, sorted_array_2):
     if not sorted_array_1 or not sorted_array_2:
@@ -58,7 +60,7 @@ def count_inversions(array):
 
 # Programming Assignment 1
 if __name__ == '__main__':
-    with open('assets/IntegerArray.txt', mode='rt') as fp:
+    with gzip.open('assets/IntegerArray.txt.gz', mode='rt') as fp:
         array = [int(i) for i in fp.read().split()]
 
     count, _ = count_inversions(array)
