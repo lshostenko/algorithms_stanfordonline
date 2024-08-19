@@ -56,6 +56,7 @@ def count_inversions(array):
     return count_1 + count_2 + count_m, merged_array
 
 
+# Programming Assignment 1
 if __name__ == '__main__':
     with open('assets/IntegerArray.txt', mode='rt') as fp:
         array = [int(i) for i in fp.read().split()]
