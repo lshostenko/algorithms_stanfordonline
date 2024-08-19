@@ -2,7 +2,6 @@ cover
 .coverage
 .python-version
 .ipynb_checkpoints
-htmlcov
 .tox
 env*
 .env*
