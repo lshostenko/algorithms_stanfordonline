@@ -1,4 +1,4 @@
 algorithms_stanfordonline
 =========================
 
-Python implementation of some algorithms, covered in the course Algorithms: Design and Analysis - Stanford Online.
+Python implementation of some algorithms from the course "Algorithms: Design and Analysis" by Stanford Online.
