@@ -1,5 +1,8 @@
 
 def second_largest(array):
+    '''
+    Assumes all values in 'array' are distinct
+    '''
     if len(array) == 2:
         return min(array)
 
