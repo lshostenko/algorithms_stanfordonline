@@ -7,7 +7,7 @@ def _swap(array, ix_1, ix_2):
 
 
 def _randpartition(array):
-    i_p = random.randrange(0, len(array))
+    i_p = random.randrange(len(array))
     pivot = array[i_p]
 
     _swap(array, i_p, 0)
