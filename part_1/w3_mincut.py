@@ -14,16 +14,10 @@ class Graph:
 
         self._update_edges()
 
-    def _update_edges(self):
-        self.edges = []
-
-        for vertex, destination_counts in self.vertices.items():
-            self.edges.extend(
-                (vertex, dest)
-                for dest in destination_counts.keys()
-                for _ in range(destination_counts[dest])
-                if vertex < dest
-            )
+    def contract(self):
+        while len(self.vertices) > 2:
+            v1, v2 = random.choice(self.edges)
+            self.merge_vertices(v1, v2)
 
     def merge_vertices(self, v1, v2):
         '''
@@ -51,10 +45,16 @@ class Graph:
 
         self._update_edges()
 
-    def contract(self):
-        while len(self.vertices) > 2:
-            v1, v2 = random.choice(self.edges)
-            self.merge_vertices(v1, v2)
+    def _update_edges(self):
+        self.edges = []
+
+        for vertex, destination_counts in self.vertices.items():
+            self.edges.extend(
+                (vertex, dest)
+                for dest in destination_counts.keys()
+                for _ in range(destination_counts[dest])
+                if vertex < dest
+            )
 
 
 def load_adjacency_list(filename):
