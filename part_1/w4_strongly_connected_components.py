@@ -18,6 +18,11 @@ class Graph:
         self.vertices.add(child_node)
         self.children[parent_node].append(child_node)
 
+    def strongly_connected_components(self):
+        g_t = self.transpose()
+        ordered_vertices = g_t._order_vertices()
+        return self._group_connected_vertices(ordered_vertices)
+
     def transpose(self):
         transposed = Graph()
 
@@ -52,6 +57,20 @@ class Graph:
 
         return timestep
 
+    def _group_connected_vertices(self, ordered_vertices):
+        result = []
+        seen = set()
+
+        for vertex in ordered_vertices:
+            if vertex in seen:
+                continue
+
+            finishing_times = {}
+            self._dfs_visit(vertex, seen, finishing_times)
+            result.append(tuple(finishing_times.keys()))
+
+        return result
+
     def _order_vertices(self):
         timestep = 0
         finishing_times = {}
@@ -75,25 +94,6 @@ class Graph:
         )
 
         return ordered_vertices
-
-    def _group_connected_vertices(self, ordered_vertices):
-        result = []
-        seen = set()
-
-        for vertex in ordered_vertices:
-            if vertex in seen:
-                continue
-
-            finishing_times = {}
-            self._dfs_visit(vertex, seen, finishing_times)
-            result.append(tuple(finishing_times.keys()))
-
-        return result
-
-    def strongly_connected_components(self):
-        g_t = self.transpose()
-        ordered_vertices = g_t._order_vertices()
-        return self._group_connected_vertices(ordered_vertices)
 
 
 # Programming Assignment 4
