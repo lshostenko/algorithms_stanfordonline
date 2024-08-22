@@ -102,8 +102,7 @@ if __name__ == '__main__':
 
     with gzip.open('assets/SCC.txt.gz', mode='rt') as fp:
         for line in fp.readlines():
-            i, v = line.split()
-            i, v = int(i), int(v)
+            i, v = map(int, line.split())
             g.add_edge(i, v)
 
         res = g.strongly_connected_components()
