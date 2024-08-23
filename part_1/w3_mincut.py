@@ -101,15 +101,15 @@ def randomized_mincut(adjacency_list, num_iter=None, silent=True):
 # Programming Assignment 3
 if __name__ == '__main__':
     adjacency_list = load_adjacency_list('assets/kargerMinCut.txt.gz')
-    num_iter = 100
+    NUM_ITER = 100
 
     t0 = monotonic()
 
     min_cut = randomized_mincut(
         adjacency_list,
-        num_iter=num_iter,
+        num_iter=NUM_ITER,
         silent=False,
     )
 
-    print(f'min_cut after {num_iter} trials: {min_cut}')
+    print(f'min_cut after {NUM_ITER} trials: {min_cut}')
     print(f'timing: {monotonic() - t0:.2f} s')
