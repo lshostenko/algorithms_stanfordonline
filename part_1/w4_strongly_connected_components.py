@@ -8,29 +8,6 @@ class Graph:
         self.vertices = set()
         self.children = defaultdict(list)
 
-    def add_edge(self, parent_node, child_node):
-        edge = (parent_node, child_node)
-        if edge in self.edges:
-            return
-
-        self.edges.add(edge)
-        self.vertices.add(parent_node)
-        self.vertices.add(child_node)
-        self.children[parent_node].append(child_node)
-
-    def strongly_connected_components(self):
-        g_t = self.transpose()
-        ordered_vertices = g_t._order_vertices()
-        return self._group_connected_vertices(ordered_vertices)
-
-    def transpose(self):
-        transposed = Graph()
-
-        for i, j in self.edges:
-            transposed.add_edge(j, i)
-
-        return transposed
-
     def _dfs_visit(self, vertex, seen, finishing_times, timestep=None):
         if timestep is None:
             if finishing_times:
@@ -94,6 +71,29 @@ class Graph:
         )
 
         return ordered_vertices
+
+    def add_edge(self, parent_node, child_node):
+        edge = (parent_node, child_node)
+        if edge in self.edges:
+            return
+
+        self.edges.add(edge)
+        self.vertices.add(parent_node)
+        self.vertices.add(child_node)
+        self.children[parent_node].append(child_node)
+
+    def strongly_connected_components(self):
+        g_t = self.transpose()
+        ordered_vertices = g_t._order_vertices()
+        return self._group_connected_vertices(ordered_vertices)
+
+    def transpose(self):
+        transposed = Graph()
+
+        for i, j in self.edges:
+            transposed.add_edge(j, i)
+
+        return transposed
 
 
 # Programming Assignment 4
