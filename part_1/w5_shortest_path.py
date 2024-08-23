@@ -5,12 +5,12 @@ from collections import defaultdict
 
 class Graph:
     def __init__(self, max_cost=float('inf')):
-        self.children = defaultdict(list)
+        self.neighbours = defaultdict(list)
         self.max_cost = max_cost
 
-    def add_edge(self, tail, head, weight):
-        if (weight, head) not in self.children[tail]:
-            self.children[tail].append((weight, head))
+    def add_edge(self, v1, v2, weight):
+        if (weight, v2) not in self.neighbours[v1]:
+            self.neighbours[v1].append((weight, v2))
 
     def find_all_shortest_paths(self, start):
         seen = set()
@@ -25,7 +25,7 @@ class Graph:
             _, node = heapq.heappop(vertex_priority)
             seen.add(node)
 
-            for weight, adj_node in self.children[node]:
+            for weight, adj_node in self.neighbours[node]:
                 if adj_node in seen:
                     continue
 
