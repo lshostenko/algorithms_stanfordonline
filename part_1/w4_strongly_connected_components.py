@@ -7,13 +7,26 @@ class Graph:
         self.edges = set()
         self.vertices = set()
         self.children = defaultdict(list)
+        self.parents = defaultdict(list)
 
-    def _dfs_visit(self, vertex, seen, finishing_times, timestep=None):
+    def _dfs_visit(
+        self,
+        vertex,
+        seen,
+        finishing_times,
+        timestep=None,
+        backward=False,
+    ):
         if timestep is None:
             if finishing_times:
                 timestep = max(finishing_times.values()) + 1
             else:
                 timestep = 0
+
+        if backward:
+            next_vertices = self.parents
+        else:
+            next_vertices = self.children
 
         stack = deque([vertex])
 
@@ -28,8 +41,8 @@ class Graph:
             else:
                 seen.add(v)
                 stack.extend(
-                    child for child in self.children[v]
-                    if child not in seen
+                    node for node in next_vertices[v]
+                    if node not in seen
                 )
 
         return timestep
@@ -43,7 +56,7 @@ class Graph:
                 continue
 
             finishing_times = {}
-            self._dfs_visit(vertex, seen, finishing_times)
+            self._dfs_visit(vertex, seen, finishing_times, backward=False)
             result.append(tuple(finishing_times.keys()))
 
         return result
@@ -62,6 +75,7 @@ class Graph:
                 seen,
                 finishing_times,
                 timestep=timestep,
+                backward=True,
             )
 
         ordered_vertices = sorted(
@@ -81,10 +95,10 @@ class Graph:
         self.vertices.add(parent_node)
         self.vertices.add(child_node)
         self.children[parent_node].append(child_node)
+        self.parents[child_node].append(parent_node)
 
     def strongly_connected_components(self):
-        g_t = self.transpose()
-        ordered_vertices = g_t._order_vertices()
+        ordered_vertices = self._order_vertices()
         return self._group_connected_vertices(ordered_vertices)
 
     def transpose(self):
@@ -105,15 +119,16 @@ if __name__ == '__main__':
             i, v = map(int, line.split())
             g.add_edge(i, v)
 
-        res = g.strongly_connected_components()
-        lengths = sorted((len(i) for i in res), reverse=True)
-        labels = (
-            'largest SCC',
-            '2nd largest SCC',
-            '3rd largest SCC',
-            '4th largest SCC',
-            '5th largest SCC',
-        )
+    scc = g.strongly_connected_components()
 
-        for label, length in zip(labels, lengths[:5]):
-            print(f'{label}:\t{length}')
+    lengths = sorted((len(i) for i in scc), reverse=True)
+    labels = (
+        'largest SCC',
+        '2nd largest SCC',
+        '3rd largest SCC',
+        '4th largest SCC',
+        '5th largest SCC',
+    )
+
+    for label, length in zip(labels, lengths[:5]):
+        print(f'{label}:\t{length}')
