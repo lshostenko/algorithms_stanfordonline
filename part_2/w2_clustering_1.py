@@ -27,6 +27,7 @@ def clustering_max_spacing(points, distances, k=4):
             return distances[edge]
 
 
+# Programming Assignment 2 - Questions 1
 if __name__ == '__main__':
     with gzip.open('assets/clustering1.txt.gz', mode='rt') as fp:
         distances = {}
@@ -41,5 +42,4 @@ if __name__ == '__main__':
             points.update(edge)
 
     assert len(points) == num_points
-
     print(clustering_max_spacing(points, distances, k=4))
