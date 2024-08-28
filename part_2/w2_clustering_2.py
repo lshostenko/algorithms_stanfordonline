@@ -44,10 +44,10 @@ if __name__ == '__main__':
     with gzip.open('assets/clustering_big.txt.gz', mode='rt') as fp:
         num_points = int(fp.readline().split()[0])
 
-        points = sorted(
+        points = [
             ''.join(char for char in line if char.isdigit())
             for line in fp.readlines()
-        )
+        ]
 
     assert len(points) == num_points
 
