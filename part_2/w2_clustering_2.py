@@ -7,6 +7,7 @@ from scipy.cluster.hierarchy import DisjointSet
 def _flip_bit(bits, ix):
     cur_bit = bits[ix]
     bit = '0' if cur_bit == '1' else '1'
+
     return bits[:ix] + bit + bits[ix + 1:]
 
 
@@ -16,12 +17,14 @@ def _next_neighbours(point_bits, all_points):
             continue
 
         bits_i = _flip_bit(point_bits, i)
+
         if bits_i in all_points:
             yield bits_i
 
         for j in range(i + 1, len(point_bits)):
             bits_ij = _flip_bit(bits_i, j)
-            if bits_ij in all_points and bits_ij > point_bits:
+
+            if bits_ij in all_points:
                 yield bits_ij
 
 
@@ -51,4 +54,6 @@ if __name__ == '__main__':
     t0 = monotonic()
     k_max = clusterize(points).n_subsets
     t1 = monotonic()
-    print(f'k_max:\t{k_max}\ntiming:\t{t1 - t0:.2f} s')
+
+    print(f'k_max:\t{k_max}')
+    print(f'timing:\t{t1 - t0:.2f} s')
