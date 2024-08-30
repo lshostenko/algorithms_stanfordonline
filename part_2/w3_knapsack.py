@@ -57,4 +57,4 @@ def knapsack(capacity, weights, values):
             ixs.append(i - 1)
             j -= weights[i - 1]
 
-    return max_value, sorted(ixs)
+    return max_value, tuple(ixs[::-1])
