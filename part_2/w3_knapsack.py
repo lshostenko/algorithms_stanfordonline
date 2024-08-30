@@ -11,8 +11,9 @@ def _calculate_table(capacity, weights, values):
     table[0, :] = 0
     table[:, 0] = 0
 
+    mask_keep = np.ones(capacity + 1, dtype=bool)
+
     for i in range(1, num_items + 1):
-        mask_keep = np.ones(capacity + 1, dtype=bool)
         mask_keep[1:] = np.arange(1, capacity + 1) < weights[i - 1]
         ixs_update = np.where(~ mask_keep)[0]
 
