@@ -6,24 +6,20 @@ def _calculate_table(capacity, weights, values):
 
     dtype = np.min_scalar_type(sum(values))
     num_items = len(values)
-    weights, values = np.array(weights), np.array(values)
 
     table = np.empty((num_items + 1, capacity + 1), dtype=dtype)
     table[0, :] = 0
     table[:, 0] = 0
 
     for i in range(1, num_items + 1):
-        mask_keep = np.hstack((
-            [True],
-            np.arange(1, capacity + 1) < weights[i - 1]
-        ))
-        mask_update = np.invert(mask_keep)
-        ixs_update = np.arange(capacity + 1)[mask_update] - weights[i - 1]
+        mask_keep = np.ones(capacity + 1, dtype=bool)
+        mask_keep[1:] = np.arange(1, capacity + 1) < weights[i - 1]
+        ixs_update = np.where(~ mask_keep)[0]
 
         table[i, mask_keep] = table[i - 1, mask_keep]
-        table[i, mask_update] = np.maximum(
-            table[i - 1, mask_update],
-            table[i - 1, ixs_update] + values[i - 1],
+        table[i, ixs_update] = np.maximum(
+            table[i - 1, ixs_update],
+            table[i - 1, ixs_update - weights[i - 1]] + values[i - 1],
         )
 
     return table
