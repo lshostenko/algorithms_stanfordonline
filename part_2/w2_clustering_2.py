@@ -13,7 +13,7 @@ def _flip_bit(bits, ix):
 
 def _next_neighbours(point_bits, all_points):
     for i in range(len(point_bits)):
-        if point_bits[i] == '1':
+        if point_bits[i] == '1':  # look only towards "larger" nodes
             continue
 
         bits_i = _flip_bit(point_bits, i)
