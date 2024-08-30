@@ -18,7 +18,7 @@ def _calculate_table(capacity, weights, values):
             np.arange(1, capacity + 1) < weights[i - 1]
         ))
         mask_update = np.invert(mask_keep)
-        ixs_update = (np.arange(capacity + 1) - weights[i - 1])[mask_update]
+        ixs_update = np.arange(capacity + 1)[mask_update] - weights[i - 1]
 
         table[i, mask_keep] = table[i - 1, mask_keep]
         table[i, mask_update] = np.maximum(
