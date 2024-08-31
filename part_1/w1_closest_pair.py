@@ -1,5 +1,5 @@
-import operator
 import math
+import operator
 
 
 def euclidean_distance(point_1, point_2):

@@ -20,10 +20,11 @@ class Graph:
             self.merge_vertices(v1, v2)
 
     def merge_vertices(self, v1, v2):
-        '''
-        Removes 'v2' from the graph, reassigning all its connections to 'v1.'
-        'v1' and 'v2' should be connected
-        '''
+        """
+        Remove 'v2' from the graph, reassigning all its connections to 'v1'.
+
+        'v1' and 'v2' should be connected.
+        """
         if (
             v1 not in self.vertices
             or v2 not in self.vertices
@@ -92,7 +93,7 @@ def randomized_mincut(adjacency_list, num_iter=None, silent=True):
                 f'Iteration {i}:\t'
                 f'current min_cut {len(graph.edges)}\t'
                 f'total min_cut {min_cut}\t'
-                f'iteration timing: {monotonic() - t0:.3f} s'
+                f'iteration timing: {monotonic() - t0:.3f} s',
             )
 
     return min_cut
