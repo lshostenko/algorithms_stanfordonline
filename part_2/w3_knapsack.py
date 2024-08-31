@@ -22,7 +22,7 @@ def _calculate_table(capacity, weights, values):
         w_i = weights[i - 1]
         v_i = values[i - 1]
 
-        if w_i >= capacity + 1:
+        if w_i > capacity:
             table[i] = table[i - 1]
             continue
 
@@ -77,7 +77,7 @@ def knapsack_max_value(capacity, weights, values):
         w_i = weights[i - 1]
         v_i = values[i - 1]
 
-        if w_i >= capacity + 1:
+        if w_i > capacity:
             continue
 
         next_row = np.zeros_like(cur_row)
