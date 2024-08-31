@@ -1,3 +1,5 @@
+from functools import cache
+
 import numpy as np
 
 
@@ -77,3 +79,25 @@ def knapsack_max_value(capacity, weights, values):
         cur_row = next_row
 
     return cur_row[capacity].item()
+
+
+def knapsack_max_value_recursive(capacity, weights, values):
+    _check_args(capacity, weights, values)
+
+    @cache
+    def _knapsack(size, ix):
+        if size == 0 or ix == 0:
+            return 0
+
+        if size < weights[ix - 1]:
+            value = _knapsack(size, ix - 1)
+
+        else:
+            value = max(
+                _knapsack(size, ix - 1),
+                _knapsack(size - weights[ix - 1], ix - 1) + values[ix - 1],
+            )
+
+        return value
+
+    return _knapsack(capacity, len(values))
