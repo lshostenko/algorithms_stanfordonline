@@ -1,7 +1,7 @@
 import gzip
 import sys
-from time import monotonic
 from functools import cache
+from time import monotonic
 
 import numpy as np
 
