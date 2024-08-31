@@ -11,16 +11,14 @@ def _calculate_table(capacity, weights, values):
     table[0, :] = 0
     table[:, 0] = 0
 
-    mask_keep = np.ones(capacity + 1, dtype=bool)
-
     for i in range(1, num_items + 1):
-        mask_keep[1:] = np.arange(1, capacity + 1) < weights[i - 1]
-        ixs_update = np.where(~ mask_keep)[0]
+        w_i = weights[i - 1]
+        v_i = values[i - 1]
 
-        table[i, mask_keep] = table[i - 1, mask_keep]
-        table[i, ixs_update] = np.maximum(
-            table[i - 1, ixs_update],
-            table[i - 1, ixs_update - weights[i - 1]] + values[i - 1],
+        table[i, :w_i] = table[i - 1, :w_i]
+        table[i, w_i:] = np.maximum(
+            table[i - 1, w_i:],
+            table[i - 1, :capacity - w_i + 1] + v_i,
         )
 
     return table
