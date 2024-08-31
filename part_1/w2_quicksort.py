@@ -65,9 +65,7 @@ def _quicksort(array, i_min, i_max, count, pivot='first'):
 
 
 def quicksort(array, pivot='first'):
-    '''
-    Sorts \'array\' in place and returns number of comparisons
-    '''
+    """Sorts 'array' in place and returns number of comparisons."""
     return _quicksort(array, 0, len(array), 0, pivot=pivot)
 
 

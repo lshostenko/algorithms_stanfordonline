@@ -29,7 +29,7 @@ def batched_range(i_min, i_max, step, num_split):
 if __name__ == '__main__':
     filename = 'assets/algo1-programming_prob-2sum.txt.gz'
     with gzip.open(filename, mode='rt') as fp:
-        all_values = set(int(i) for i in fp.readlines())
+        all_values = {int(i) for i in fp.readlines()}
 
     t0 = time.monotonic()
 
