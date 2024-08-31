@@ -56,6 +56,18 @@ class Graph:
 
         return seen == self.vertices.keys()
 
+    def minimum_spanning_tree_kruskal(self):
+        mst = Graph()
+
+        unionfind = DisjointSet(self.vertices.keys())
+
+        for v1, v2 in sorted(self.edges.keys(), key=self.edges.get):
+            if not unionfind.connected(v1, v2):
+                unionfind.merge(v1, v2)
+                mst.add_edge(v1, v2, self.edges[(v1, v2)])
+
+        return mst
+
     def minimum_spanning_tree_prim(self):
         if not self.is_connected():
             return
@@ -85,18 +97,6 @@ class Graph:
 
                 w_next = self._edge_weight(v2, v_next)
                 heapq.heappush(vertex_priority, (w_next, v2, v_next))
-
-        return mst
-
-    def minimum_spanning_tree_kruskal(self):
-        mst = Graph()
-
-        unionfind = DisjointSet(self.vertices.keys())
-
-        for v1, v2 in sorted(self.edges.keys(), key=self.edges.get):
-            if not unionfind.connected(v1, v2):
-                unionfind.merge(v1, v2)
-                mst.add_edge(v1, v2, self.edges[(v1, v2)])
 
         return mst
 
