@@ -81,15 +81,11 @@ def knapsack_max_value(capacity, weights, values):
             continue
 
         v_i = values[i - 1]
-        next_row = np.concatenate((
-            cur_row[:w_i],
-            np.maximum(
-                cur_row[w_i:],
-                cur_row[:capacity + 1 - w_i] + v_i,
-            ),
-        ))
 
-        cur_row = next_row
+        cur_row[w_i:] = np.maximum(
+            cur_row[w_i:],
+            cur_row[:capacity + 1 - w_i] + v_i,
+        )
 
     return cur_row[capacity].item()
 
