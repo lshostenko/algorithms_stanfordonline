@@ -71,16 +71,11 @@ def knapsack_max_value(capacity, weights, values):
     _check_args(capacity, weights, values)
 
     dtype = np.min_scalar_type(sum(values))
-    num_items = len(values)
     cur_row = np.zeros(capacity + 1, dtype=dtype)
 
-    for i in range(1, num_items + 1):
-        w_i = weights[i - 1]
-
+    for w_i, v_i in zip(weights, values):
         if w_i > capacity:
             continue
-
-        v_i = values[i - 1]
 
         cur_row[w_i:] = np.maximum(
             cur_row[w_i:],
