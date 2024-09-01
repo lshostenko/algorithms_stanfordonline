@@ -20,11 +20,12 @@ def _calculate_table(capacity, weights, values):
 
     for i in range(1, num_items + 1):
         w_i = weights[i - 1]
-        v_i = values[i - 1]
 
         if w_i > capacity:
             table[i] = table[i - 1]
             continue
+
+        v_i = values[i - 1]
 
         table[i, :w_i] = table[i - 1, :w_i]
         table[i, w_i:] = np.maximum(
@@ -75,17 +76,18 @@ def knapsack_max_value(capacity, weights, values):
 
     for i in range(1, num_items + 1):
         w_i = weights[i - 1]
-        v_i = values[i - 1]
 
         if w_i > capacity:
             continue
 
-        next_row = np.zeros_like(cur_row)
-        next_row[:w_i] = cur_row[:w_i]
-        next_row[w_i:] = np.maximum(
-            cur_row[w_i:],
-            cur_row[:capacity + 1 - w_i] + v_i,
-        )
+        v_i = values[i - 1]
+        next_row = np.concatenate((
+            cur_row[:w_i],
+            np.maximum(
+                cur_row[w_i:],
+                cur_row[:capacity + 1 - w_i] + v_i,
+            ),
+        ))
 
         cur_row = next_row
 
