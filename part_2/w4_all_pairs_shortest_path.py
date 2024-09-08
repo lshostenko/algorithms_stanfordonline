@@ -2,7 +2,7 @@ import math
 from collections import defaultdict
 
 
-class Graph:
+class DiGraph:
     def __init__(self):
         self.edges = defaultdict(math.inf)
         self.vertices = set()
