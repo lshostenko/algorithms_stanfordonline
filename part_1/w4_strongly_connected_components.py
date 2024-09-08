@@ -2,7 +2,7 @@ import gzip
 from collections import defaultdict, deque
 
 
-class Graph:
+class DiGraph:
     def __init__(self):
         self.edges = set()
         self.vertices = set()
@@ -102,7 +102,7 @@ class Graph:
         return self._group_connected_vertices(ordered_vertices)
 
     def transpose(self):
-        transposed = Graph()
+        transposed = DiGraph()
 
         for i, j in self.edges:
             transposed.add_edge(j, i)
@@ -112,7 +112,7 @@ class Graph:
 
 # Programming Assignment 4
 if __name__ == '__main__':
-    g = Graph()
+    g = DiGraph()
 
     with gzip.open('assets/SCC.txt.gz', mode='rt') as fp:
         for line in fp.readlines():
