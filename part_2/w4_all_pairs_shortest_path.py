@@ -28,8 +28,7 @@ class DiGraph:
 
         for edge, weight in self.edges.items():
             start, end = edge
-            ix_1, ix_2 = vertices_id[start], vertices_id[end]
-            adjacency_matrix[ix_1, ix_2] = weight
+            adjacency_matrix[vertices_id[start], vertices_id[end]] = weight
 
         return vertices, adjacency_matrix
 
@@ -49,13 +48,16 @@ class DiGraph:
         result = {}
 
         for i, source in enumerate(vertices):
-            paths_i = {
+            paths = {
                 vertices[j]: shortest_paths[i, j].item()
                 for j in range(len(vertices))
                 if i != j and not np.isinf(shortest_paths[i, j])
             }
 
-            if paths_i:
-                result[source] = paths_i
+            if paths:
+                result[source] = paths
 
         return result
+
+    def shortest_path_johnson(self):
+        return
