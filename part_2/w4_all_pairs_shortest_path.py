@@ -176,5 +176,5 @@ if __name__ == '__main__':
             result = int(min(chain(min(p.values()) for p in res1.values())))
 
         print(f'{label}: {result}')
-        print(f'Timing Floyd Warshall:\t{t_fw:.3f}')
-        print(f'Timing Johnson:\t{t_j:.3f}')
+        print(f'Timing Floyd Warshall:\t{t_fw:.3f} s')
+        print(f'Timing Johnson:\t{t_j:.3f} s')
