@@ -1,3 +1,5 @@
+import heapq
+import math
 from collections import defaultdict
 
 import numpy as np
@@ -9,8 +11,40 @@ class DiGraph:
         self.vertices = set()
         self.children = defaultdict(list)
 
-    def _dijkstra_single_source(self, vertices_weights):
-        raise NotImplementedError
+    def _dijkstra_single_source(self, source, vertices_weights):
+        seen = set()
+        reweighted_edges = {
+            (u, v): weight + vertices_weights[u] - vertices_weights[v]
+            for (u, v), weight in self.edges.items()
+        }
+        costs = defaultdict(lambda: math.inf)
+        costs[source] = 0
+
+        vertex_priority = []
+        heapq.heappush(vertex_priority, (0, source))
+
+        while vertex_priority:
+            _, vertex = heapq.heappop(vertex_priority)
+            seen.add(vertex)
+
+            for child in self.children[vertex]:
+                if child in seen:
+                    continue
+
+                new_cost = costs[vertex] + reweighted_edges[(vertex, child)]
+
+                if costs[child] > new_cost:
+                    costs[child] = new_cost
+                    heapq.heappush(vertex_priority, (new_cost, child))
+
+        result = {}
+
+        for vertex, weight in costs.items():
+            weight += vertices_weights[vertex] - vertices_weights[source]
+
+            result[vertex] = weight
+
+        return result
 
     def _get_adjacency_matrix(self):
         vertices_id = {v: i for i, v in enumerate(self.vertices)}
@@ -26,7 +60,22 @@ class DiGraph:
         return vertices, adjacency_matrix
 
     def _get_vertices_weights(self):
-        raise NotImplementedError
+        vertices_weights = defaultdict(int)
+
+        for _ in range(len(self.vertices)):
+            updated = False
+
+            for edge, weight in self.edges.items():
+                start, end = edge
+
+                pivot_weight = vertices_weights[start] + weight
+
+                if pivot_weight < vertices_weights[end]:
+                    vertices_weights[end] = pivot_weight
+                    updated = True
+
+        if not updated:
+            return vertices_weights
 
     def add_edge(self, parent_node, child_node, weight):
         edge = (parent_node, child_node)
@@ -54,14 +103,11 @@ class DiGraph:
         result = {}
 
         for i, source in enumerate(vertices):
-            shortest_path = {
+            result[source] = {
                 vertices[j]: path_matrix[i, j].item()
                 for j in range(len(vertices))
-                if i != j and not np.isinf(path_matrix[i, j])
+                if not np.isinf(path_matrix[i, j])
             }
-
-            if shortest_path:
-                result[source] = shortest_path
 
         return result
 
