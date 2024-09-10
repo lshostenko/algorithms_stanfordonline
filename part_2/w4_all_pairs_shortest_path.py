@@ -1,6 +1,9 @@
+import gzip
 import heapq
 import math
 from collections import defaultdict
+from itertools import chain
+from time import monotonic
 
 import numpy as np
 
@@ -11,14 +14,11 @@ class DiGraph:
         self.vertices = set()
         self.children = defaultdict(list)
 
-    def _dijkstra_single_source(self, source, vertices_weights):
+    def _dijkstra_single_source(self, source, vertices_weights, edges_weights):
         seen = set()
-        reweighted_edges = {
-            (u, v): weight + vertices_weights[u] - vertices_weights[v]
-            for (u, v), weight in self.edges.items()
-        }
+
         costs = defaultdict(lambda: math.inf)
-        costs[source] = 0
+        costs[source] = 0.
 
         vertex_priority = []
         heapq.heappush(vertex_priority, (0, source))
@@ -31,7 +31,7 @@ class DiGraph:
                 if child in seen:
                     continue
 
-                new_cost = costs[vertex] + reweighted_edges[(vertex, child)]
+                new_cost = costs[vertex] + edges_weights[(vertex, child)]
 
                 if costs[child] > new_cost:
                     costs[child] = new_cost
@@ -112,4 +112,69 @@ class DiGraph:
         return result
 
     def shortest_path_johnson(self):
-        raise NotImplementedError
+        weights = self._get_vertices_weights()
+        if weights is None:
+            return
+
+        edges = {
+            (u, v): weight + weights[u] - weights[v]
+            for (u, v), weight in self.edges.items()
+        }
+
+        result = {
+            v: self._dijkstra_single_source(v, weights, edges)
+            for v in self.vertices
+        }
+
+        return result
+
+
+def load_graph(filename):
+    graph = DiGraph()
+
+    if filename.endswith('.gz'):
+        open_file = gzip.open
+    else:
+        open_file = open
+
+    with open_file(filename, mode='rt') as fp:
+        num_vertices, num_edges = map(int, fp.readline().split())
+
+        for line in fp.readlines():
+            tail, head, weight = map(int, line.split())
+            graph.add_edge(tail, head, weight)
+
+    assert len(graph.vertices) == num_vertices
+    assert len(graph.edges) == num_edges
+
+    return graph
+
+
+if __name__ == '__main__':
+    files = (
+        ('g1', 'assets/g1.txt.gz'),
+        ('g2', 'assets/g2.txt.gz'),
+        ('g3', 'assets/g3.txt.gz'),
+    )
+
+    for label, filename in files:
+        graph = load_graph(filename)
+
+        t0 = monotonic()
+        res1 = graph.shortest_path_floyd_warshall()
+        t_fw = monotonic() - t0
+
+        t0 = monotonic()
+        res2 = graph.shortest_path_johnson()
+        t_j = monotonic() - t0
+
+        assert res1 == res2
+
+        if res1 is None:
+            result = 'The graphs has negative-cost cycles'
+        else:
+            result = int(min(chain(min(p.values()) for p in res1.values())))
+
+        print(f'{label}: {result}')
+        print(f'Timing Floyd Warshall:\t{t_fw:.3f}')
+        print(f'Timing Johnson:\t{t_j:.3f}')
