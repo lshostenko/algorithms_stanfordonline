@@ -10,7 +10,7 @@ class DiGraph:
         self.children = defaultdict(list)
 
     def _dijkstra_single_source(self, vertices_weights):
-        return
+        raise NotImplementedError
 
     def _get_adjacency_matrix(self):
         vertices_id = {v: i for i, v in enumerate(self.vertices)}
@@ -26,7 +26,7 @@ class DiGraph:
         return vertices, adjacency_matrix
 
     def _get_vertices_weights(self):
-        return
+        raise NotImplementedError
 
     def add_edge(self, parent_node, child_node, weight):
         edge = (parent_node, child_node)
@@ -66,4 +66,4 @@ class DiGraph:
         return result
 
     def shortest_path_johnson(self):
-        return
+        raise NotImplementedError
