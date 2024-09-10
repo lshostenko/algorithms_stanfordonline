@@ -12,14 +12,14 @@ class Graph:
         if (weight, v2) not in self.neighbours[v1]:
             self.neighbours[v1].append((weight, v2))
 
-    def find_all_shortest_paths(self, start):
+    def dijkstra_shortest_path(self, source):
         seen = set()
 
         costs = defaultdict(lambda: self.max_cost)
-        costs[start] = 0
+        costs[source] = 0
 
         vertex_priority = []
-        heapq.heappush(vertex_priority, (0, start))
+        heapq.heappush(vertex_priority, (0, source))
 
         while vertex_priority:
             _, node = heapq.heappop(vertex_priority)
@@ -53,7 +53,7 @@ if __name__ == '__main__':
 
     START = 1
     DESTINATIONS = [7, 37, 59, 82, 99, 115, 133, 165, 188, 197]
-    paths = g.find_all_shortest_paths(START)
+    paths = g.dijkstra_shortest_path(START)
 
     for v in DESTINATIONS:
         print(f'shortest path [{START} -> {v}]:\t{paths[v]}')
