@@ -39,25 +39,25 @@ class DiGraph:
         self.children[parent_node].append(child_node)
 
     def shortest_path_floyd_warshall(self):
-        vertices, shortest_paths = self._get_adjacency_matrix()
+        vertices, path_matrix = self._get_adjacency_matrix()
 
         for ix in range(len(vertices)):
-            shortest_paths = np.minimum(
-                shortest_paths,
-                shortest_paths[np.newaxis, ix, :]
-                + shortest_paths[:, ix, np.newaxis],
+            path_matrix = np.minimum(
+                path_matrix,
+                path_matrix[np.newaxis, ix, :]
+                + path_matrix[:, ix, np.newaxis],
             )
 
-            if np.any(shortest_paths.diagonal() != 0):
+            if np.any(path_matrix.diagonal() != 0):
                 return
 
         result = {}
 
         for i, source in enumerate(vertices):
             shortest_path = {
-                vertices[j]: shortest_paths[i, j].item()
+                vertices[j]: path_matrix[i, j].item()
                 for j in range(len(vertices))
-                if i != j and not np.isinf(shortest_paths[i, j])
+                if i != j and not np.isinf(path_matrix[i, j])
             }
 
             if shortest_path:
