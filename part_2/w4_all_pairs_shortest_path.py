@@ -9,17 +9,10 @@ class DiGraph:
         self.vertices = set()
         self.children = defaultdict(list)
 
-    def add_edge(self, parent_node, child_node, weight):
-        edge = (parent_node, child_node)
-        if edge in self.edges:
-            return
+    def _dijkstra_single_source(self, vertices_weights):
+        return
 
-        self.edges[edge] = weight
-        self.vertices.add(parent_node)
-        self.vertices.add(child_node)
-        self.children[parent_node].append(child_node)
-
-    def get_adjacency_matrix(self):
+    def _get_adjacency_matrix(self):
         vertices_id = {v: i for i, v in enumerate(self.vertices)}
         vertices = sorted(vertices_id.keys(), key=vertices_id.get)
 
@@ -32,8 +25,21 @@ class DiGraph:
 
         return vertices, adjacency_matrix
 
+    def _get_vertices_weights(self):
+        return
+
+    def add_edge(self, parent_node, child_node, weight):
+        edge = (parent_node, child_node)
+        if edge in self.edges:
+            return
+
+        self.edges[edge] = weight
+        self.vertices.add(parent_node)
+        self.vertices.add(child_node)
+        self.children[parent_node].append(child_node)
+
     def shortest_path_floyd_warshall(self):
-        vertices, shortest_paths = self.get_adjacency_matrix()
+        vertices, shortest_paths = self._get_adjacency_matrix()
 
         for ix in range(len(vertices)):
             shortest_paths = np.minimum(
