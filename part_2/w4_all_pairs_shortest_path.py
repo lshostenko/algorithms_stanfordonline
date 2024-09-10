@@ -14,7 +14,7 @@ class DiGraph:
         self.vertices = set()
         self.children = defaultdict(list)
 
-    def _dijkstra_single_source(self, source, vertices_weights, edges_weights):
+    def _dijkstra_single_source(self, source, vertices_weights, edges):
         seen = set()
 
         costs = defaultdict(lambda: math.inf)
@@ -31,7 +31,7 @@ class DiGraph:
                 if child in seen:
                     continue
 
-                new_cost = costs[vertex] + edges_weights[(vertex, child)]
+                new_cost = costs[vertex] + edges[(vertex, child)]
 
                 if costs[child] > new_cost:
                     costs[child] = new_cost
@@ -176,5 +176,5 @@ if __name__ == '__main__':
             result = int(min(chain(min(p.values()) for p in res1.values())))
 
         print(f'{label}: {result}')
-        print(f'Timing Floyd Warshall:\t{t_fw:.3f} s')
-        print(f'Timing Johnson:\t{t_j:.3f} s')
+        print(f'timing Floyd Warshall:\t{t_fw:.3f} s')
+        print(f'timing Johnson:\t{t_j:.3f} s')
