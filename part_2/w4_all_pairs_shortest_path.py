@@ -48,14 +48,14 @@ class DiGraph:
         result = {}
 
         for i, source in enumerate(vertices):
-            paths = {
+            shortest_path = {
                 vertices[j]: shortest_paths[i, j].item()
                 for j in range(len(vertices))
                 if i != j and not np.isinf(shortest_paths[i, j])
             }
 
-            if paths:
-                result[source] = paths
+            if shortest_path:
+                result[source] = shortest_path
 
         return result
 
