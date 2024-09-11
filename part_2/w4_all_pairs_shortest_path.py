@@ -14,7 +14,7 @@ class DiGraph:
         self.vertices = set()
         self.children = defaultdict(list)
 
-    def _dijkstra_single_source(self, source, vertices_weights, edges):
+    def _dijkstra_single_source(self, source, vertices_weights, edges_weights):
         seen = set()
 
         costs = defaultdict(lambda: math.inf)
@@ -31,7 +31,7 @@ class DiGraph:
                 if child in seen:
                     continue
 
-                new_cost = costs[vertex] + edges[(vertex, child)]
+                new_cost = costs[vertex] + edges_weights[(vertex, child)]
 
                 if costs[child] > new_cost:
                     costs[child] = new_cost
@@ -112,17 +112,17 @@ class DiGraph:
         return result
 
     def shortest_path_johnson(self):
-        weights = self._get_vertices_weights()
-        if weights is None:
+        v_weights = self._get_vertices_weights()
+        if v_weights is None:
             return
 
-        edges = {
-            (u, v): weight + weights[u] - weights[v]
+        e_weights = {
+            (u, v): weight + v_weights[u] - v_weights[v]
             for (u, v), weight in self.edges.items()
         }
 
         result = {
-            v: self._dijkstra_single_source(v, weights, edges)
+            v: self._dijkstra_single_source(v, v_weights, e_weights)
             for v in self.vertices
         }
 
