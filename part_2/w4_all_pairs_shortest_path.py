@@ -61,6 +61,7 @@ class DiGraph:
 
     def _get_vertices_weights(self):
         vertices_weights = defaultdict(int)
+        updated = False
 
         for _ in range(len(self.vertices)):
             updated = False
