@@ -129,6 +129,7 @@ def load_data(filename):
     return capacity, weights, values
 
 
+# Programming Assignment 3
 if __name__ == '__main__':
     capacity, weights, values = load_data('assets/knapsack1.txt.gz')
 
